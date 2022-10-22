@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+{% block content %}
+<h5>찾고 싶은 연수 키워드를 입력해보세요.</h5>
+
+<form action="{% url 'search:results' %}" method="get">
+    <label for="search">검색:</label>
+    <input id="search" type="text" placeholder="검색어" name="kw">
+    <input type="submit" value="OK">
+    <ul>
+        <li>
+            <input type="checkbox" name="checkall" id="th_checkall">
+            <label for="th_checkall">전체 선택</label>
+            <input type="checkbox" name="choice_site1" id="site", checked="checked">
+            <label for="site">아이스크림</label>
+            <input type="checkbox" name="choice_site2" id="site", checked="checked">
+            <label for="site">티처빌</label>
+<!--            <script type="text/javascript">-->
+<!--                var checkbox_all = document.getElementById("th_checkall");-->
+<!--                var checkboxes = document.getElementsById("site");-->
+
+<!--                function checkAll(){-->
+<!--                       if(checkbox_all.checked==true){-->
+<!--                             for(var i=0; i<2; i++) {-->
+<!--                             checkboxes[i].checked=true;-->
+<!--                             }-->
+<!--                          }-->
+<!--                       if(checkbox_all.checked==false){-->
+<!--                             for(var i=0; i<2; i++) {-->
+<!--                             checkboxes[i].checked=false;-->
+<!--                             }-->
+<!--                          }-->
+<!--                       }-->
+<!--            </script>-->
+        </li>
+        <li>
+            <input type="checkbox" name="selectall" id="selectall_1" onclick="SelectAll(this)"/>
+            <label for="selectall_1">전체 선택</label>
+            <input type="checkbox" name="choice_type1" id="생활", checked="checked">
+            <label for="생활">생활지도</label>
+            <input type="checkbox" name="choice_type2" id="학습", checked="checked">
+            <label for="학습">학습지도</label>
+            <input type="checkbox" name="choice_type3" id="어학", checked="checked">
+            <label for="어학">어학</label>
+            <input type="checkbox" name="choice_type4" id="계발", checked="checked">
+            <label for="계발">자기계발</label>
+            <input type="checkbox" name="choice_type5" id="인문", checked="checked">
+            <label for="인문">인문·교양</label>
+            <input type="checkbox" name="choice_type6" id="교과", checked="checked">
+            <label for="교과">교과지도</label>
+            <input type="checkbox" name="choice_type7" id="스마트", checked="checked">
+            <label for="스마트">ICT·스마트</label>
+            <input type="checkbox" name="choice_type8" id="경영", checked="checked">
+            <label for="경영">학급경영</label>
+            <input type="checkbox" name="choice_type9" id="진로", checked="checked">
+            <label for="진로">진로·인성</label>
+        </li>
+        <li>
+            <input type="checkbox" name="selectall" id="selectall_2" onclick="SelectAll(this)"/>
+            <label for="selectall_2">전체 선택</label>
+            <input type="checkbox" name="choice_time1" id="~10", checked="checked">
+            <label for="~10">10시간 이하</label>
+            <input type="checkbox" name="choice_time2" id="15", checked="checked">
+            <label for="15">15시간(1학점)</label>
+            <input type="checkbox" name="choice_time3" id="30", checked="checked">
+            <label for="30">30시간(2학점)</label>
+            <input type="checkbox" name="choice_time4" id="45", checked="checked">
+            <label for="45">45시간(3학점)</label>
+            <input type="checkbox" name="choice_time5" id="60", checked="checked">
+            <label for="60">60시간(4학점)</label>
+        </li>
+        <li>
+            <input type="checkbox" name="selectall" id="selectall_3" onclick="SelectAll(this)"/>
+            <label for="selectall_3">전체 선택</label>
+            <input type="checkbox" name="choice_price1" id="free", checked="checked">
+            <label for="free">무료</label>
+            <input type="checkbox" name="choice_price2" id="~5", checked="checked">
+            <label for="~5">5만원 이하</label>
+            <input type="checkbox" name="choice_price3" id="~10", checked="checked">
+            <label for="~10">5만원~10만원</label>
+            <input type="checkbox" name="choice_price4" id="10~~", checked="checked">
+            <label for="10~~">10만원 이상</label>
+    </ul>
+</form>
+<br/>
+{% load search_extras %}
+<div class="card-deck m-5 p-5">
+    {% for class in training_all %}
+    {% with quotient=training_all.count|divide:5 %}
+    {% for i in quotient|range %}
+    {% if forloop.parentloop.counter0|divide:5 == i %}
+  <div class="{% cycle 'card' 'card' 'card' 'card' 'card' %}">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ class }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ class.type }}</h6>
+      <p class="card-text">(설명 추가)</p>
+      <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>
+    </div>
+      <div class="card-footer">
+        <small class="text-muted">{{ class.website }}</small>
+      </div>
+  </div>
+    {% else %}{% endif %}
+    {% endfor %}
+    {% endwith %}
+    {% endfor %}
+</div>
+
+{% endblock %}
+<!--<div class="row row-cols-2 row-cols-md-3">-->
+<!--  <div class="col mb-4">-->
+<!--    <div class="card h-100">-->
+<!--      <img src="{{ class.image }}" class="card-img-top " alt="">-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">{{ class }}</h5>-->
+<!--        <h6 class="card-subtitle mb-2 text-muted">{{ class.type }}</h6>-->
+<!--        <p class="card-text">(설명 추가)</p>-->
+<!--        <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>-->
+<!--      </div>-->
+<!--      <div class="card-footer">-->
+<!--        <small class="text-muted">{{ class.website }}</small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col mb-4">-->
+<!--    <div class="card h-100">-->
+<!--      <img src="{{ class.image }}" class="card-img-top " alt="">-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">{{ class }}</h5>-->
+<!--        <h6 class="card-subtitle mb-2 text-muted">{{ class.type }}</h6>-->
+<!--        <p class="card-text">(설명 추가)</p>-->
+<!--        <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>-->
+<!--      </div>-->
+<!--      <div class="card-footer">-->
+<!--        <small class="text-muted">{{ class.website }}</small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col mb-4">-->
+<!--    <div class="card h-100">-->
+<!--      <img src="{{ class.image }}" class="card-img-top " alt="">-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">{{ class }}</h5>-->
+<!--        <h6 class="card-subtitle mb-2 text-muted">{{ class.type }}</h6>-->
+<!--        <p class="card-text">(설명 추가)</p>-->
+<!--        <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>-->
+<!--      </div>-->
+<!--      <div class="card-footer">-->
+<!--        <small class="text-muted">{{ class.website }}</small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<ul class="pagination justify-content-center">-->
+<!--    &lt;!&ndash; 이전페이지 &ndash;&gt;-->
+<!--    {% if queryset.has_previous %}-->
+<!--    <li class="page-item">-->
+<!--        <a class="page-link" href="?page={{ queryset.previous_page_number }}">이전</a>-->
+<!--    </li>-->
+<!--    {% else %}-->
+<!--    <li class="page-item disabled">-->
+<!--        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>-->
+<!--    </li>-->
+<!--    {% endif %}-->
+<!--    &lt;!&ndash; 페이지리스트 &ndash;&gt;-->
+<!--    {% for page_number in queryset.paginator.page_range %}-->
+<!--    {% if page_number >= queryset.number|add:-5 and page_number <= qeuryset.number|add:5 %}-->
+<!--        {% if page_number == queryset.number %}-->
+<!--        <li class="page-item active" aria-current="page">-->
+<!--            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>-->
+<!--        </li>-->
+<!--        {% else %}-->
+<!--        <li class="page-item">-->
+<!--            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--    {% endif %}-->
+<!--    {% endfor %}-->
+<!--    &lt;!&ndash; 다음페이지 &ndash;&gt;-->
+<!--    {% if queryset.has_next %}-->
+<!--    <li class="page-item">-->
+<!--        <a class="page-link" href="?page={{ queryset.next_page_number }}">다음</a>-->
+<!--    </li>-->
+<!--    {% else %}-->
+<!--    <li class="page-item disabled">-->
+<!--        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>-->
+<!--    </li>-->
+<!--    {% endif %}-->
+<!--</ul>-->
+
+</body>
+</html>

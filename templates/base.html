@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <title>{% block title %}Search4Teacher{% endblock title %}</title>
+</head>
+
+<body>
+    <div id="sidebar">{% block sidebar %}
+
+        <a href="/"># Home</a>
+        <a href="/admin/"># Admin</a>&nbsp;&nbsp;&nbsp;
+
+        {% if user.is_authenticated %}
+            <span style="font-size:18px;">{{ user.username }}님, 안녕하세요! &nbsp;<a href="{% url 'account:logout' %}">(# 로그아웃)</a></span>
+        {% else %}
+            <a href="{% url 'account:register' %}"># 회원가입</a>
+            <a href="{% url 'account:login' %}"># 로그인</a>
+        {% endif %}
+        <br/><br/><br/>
+    {% endblock sidebar %}</div>
+
+    <div id="content">
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

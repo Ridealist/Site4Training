@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+<h4>내가 들은 연수</h4>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">연수이수번호</th>
+      <th scope="col">연수과정명</th>
+      <th scope="col">연수기관</th>
+      <th scope="col">연수시간</th>
+      <th scope="col">2021년 연수시간누계</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% load mypage_extras %}
+    {% with tp=training_list.number|add:-1|multi:10 %}
+    {% for train in training_list %}
+    <tr>
+      <th scope="row">{{ forloop.counter|add:tp }}</th>
+      <td>{{ train.number }}</td>
+      <td>{{ train.name }}</td>
+      <td>{{ train.auth }}</td>
+      <td>{{ train.time }}</td>
+      <td></td>
+    </tr>
+    {% endfor %}
+    {% endwith %}
+  </tbody>
+</table>
+
+<ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if training_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ training_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in training_list.paginator.page_range %}
+        {% if page_number >= training_list.number|add:-5 and page_number <= training_list.number|add:5 %}
+            {% if page_number == training_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if training_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ question_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+
+<form method="post" action="{% url 'mypage:upload' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="제출">
+</form>
+
+<br/>
+<br/>
+<br/>
+
+<h4>법정 의무 연수 이수 현황</h4>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">인정 교육</th>
+      <th scope="col">필요 이수 시간</th>
+      <th scope="col" style="color:red">나의 이수 현황</th>
+      <th scope="col"style="color:blue">관련 연수</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>교육활동 침해행위 예방교육</td>
+      <td>연 1회 이상</td>
+      <td>4시간/4시간</td>
+      <td colspan="1">
+        <a href="{% url 'search:results' %}?kw=침해&site_all=on&choice_site1=on&choice_site2=on" target="_blank">연수 목록 ↗</a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>긴급복지 신고의무교육</td>
+      <td>연 1시간 이상</td>
+      <td>4시간/4시간</td>
+      <td>@instagram</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>부정청탁 및 금품 수수 금지교육</td>
+      <td>연1회 2시간 이상</td>
+      <td>4시간/4시간</td>
+      <td>@twitter</td>
+    </tr>
+      <tr>
+      <th scope="row">4</th>
+      <td>부패방지 교육</td>
+      <td>연1회 2시간 이상</td>
+      <td>4시간/4시간</td>
+      <td>@facebook</td>
+    </tr>
+      <tr>
+      <th scope="row">5</th>
+      <td>생명존중 및 자살 예방교육</td>
+      <td>연 4시간 이상</td>
+      <td>4시간/4시간</td>
+      <td colspan="1">
+        <a href="{% url 'search:results' %}?kw=자살&site_all=on&choice_site1=on&choice_site2=on" target="_blank">연수 목록 ↗</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock content %}
+
+</body>
+</html>

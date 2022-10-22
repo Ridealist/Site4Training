@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+<h5>찾고 싶은 연수 키워드를 입력해보세요.</h5>
+
+{% if query %}
+    <h5>검색어 : <b>{{ query }}</b></h5>
+{% endif %}
+
+
+<form id="searchForm" action="{% url 'search:results' %}" method="get">
+    <label for="search">검색:</label>
+    <input id="search" type="text" placeholder="(빈칸은 전체 검색)" name="kw">
+    <input type="submit" class="btn btn-primary" value="OK">
+<!--    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">-->
+<!--    <input type="hidden" id="page" name="page" value="{{ page }}">-->
+    <ul>
+        <li class="site">
+<!--            <input type="checkbox" name="site_all" id="site_all" checked="checked">-->
+<!--            <label for="site_all">(전체 선택)</label>-->
+            <input type="checkbox" name="choice_site1" id="site1">
+            <label for="site1">아이스크림</label>
+            <input type="checkbox" name="choice_site2" id="site2">
+            <label for="site2">티처빌</label>
+<!--            <script type="text/javascript">-->
+<!--                var checkbox_all = document.getElementById("th_checkall");-->
+<!--                var checkboxes = document.getElementsById("site");-->
+
+<!--                function checkAll(){-->
+<!--                       if(checkbox_all.checked==true){-->
+<!--                             for(var i=0; i<2; i++) {-->
+<!--                             checkboxes[i].checked=true;-->
+<!--                             }-->
+<!--                          }-->
+<!--                       if(checkbox_all.checked==false){-->
+<!--                             for(var i=0; i<2; i++) {-->
+<!--                             checkboxes[i].checked=false;-->
+<!--                             }-->
+<!--                          }-->
+<!--                       }-->
+<!--            </script>-->
+        </li>
+        <li class="type">
+<!--            <input type="checkbox" name="type_all" id="chtype_all" checked="checked">-->
+<!--            <label for="chtype_all">(전체)</label>-->
+            <input type="checkbox" name="choice_type1" id="생활">
+            <label for="생활">생활지도</label>
+            <input type="checkbox" name="choice_type2" id="학습">
+            <label for="학습">학습지도</label>
+            <input type="checkbox" name="choice_type3" id="어학">
+            <label for="어학">어학</label>
+            <input type="checkbox" name="choice_type4" id="계발">
+            <label for="계발">자기계발</label>
+            <input type="checkbox" name="choice_type5" id="인문">
+            <label for="인문">인문·교양</label>
+            <input type="checkbox" name="choice_type6" id="교과">
+            <label for="교과">교과지도</label>
+            <input type="checkbox" name="choice_type7" id="스마트">
+            <label for="스마트">ICT·스마트</label>
+            <input type="checkbox" name="choice_type8" id="경영">
+            <label for="경영">학급경영</label>
+            <input type="checkbox" name="choice_type9" id="진로">
+            <label for="진로">진로·인성</label>
+        </li>
+        <li class="time">
+<!--            <input type="checkbox" name="time_all" id="chtime_all" checked="checked">-->
+<!--            <label for="chtime_all">(전체)</label>-->
+            <input type="checkbox" name="choice_time1" id="10시간 이하">
+            <label for="10시간 이하">10시간 이하</label>
+            <input type="checkbox" name="choice_time2" id="15">
+            <label for="15">15시간(1학점)</label>
+            <input type="checkbox" name="choice_time3" id="30">
+            <label for="30">30시간(2학점)</label>
+            <input type="checkbox" name="choice_time4" id="45">
+            <label for="45">45시간(3학점)</label>
+            <input type="checkbox" name="choice_time5" id="60">
+            <label for="60">60시간(4학점)</label>
+        </li>
+        <li class="price">
+<!--            <input type="checkbox" name="price_all" id="chprice_all" checked="checked">-->
+<!--            <label for="chprice_all">(전체)</label>-->
+            <input type="checkbox" name="choice_price1" id="free">
+            <label for="free">무료</label>
+            <input type="checkbox" name="choice_price2" id="~5">
+            <label for="~5">5만원 이하</label>
+            <input type="checkbox" name="choice_price3" id="~10">
+            <label for="~10">5만원~10만원</label>
+            <input type="checkbox" name="choice_price4" id="10~~">
+            <label for="10~~">10만원 이상</label>
+    </ul>
+</form>
+
+
+<br/>
+{% load search_extras %}
+<div class="row row-cols-1 row-cols-md-6">
+    {% for class in training_list %}
+    {% if forloop.counter0|divide:5 == 0 %}
+  <div class="col mb-5">
+      <div class="card h-100">
+        <img src="{{ class.image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ class }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">[{{ class.time }}]{{ class.type }}</h6>
+            <br/>
+            <h5 class="card-subtitle mb-2">{{ class.price }}원</h5>
+          <p class="card-text">(설명 추가)</p>
+          <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>
+        </div>
+          <div class="card-footer">
+            <small class="text-muted">{{ class.website }}</small>
+          </div>
+      </div>
+  </div>
+    {% else %}{% endif %}
+    {% endfor %}
+</div>
+<div class="row row-cols-1 row-cols-md-6">
+    {% for class in training_list %}
+    {% if forloop.counter0|divide:5 == 1 %}
+  <div class="col mb-5">
+      <div class="card h-100">
+        <img src="{{ class.image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ class }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">[{{ class.time }}]{{ class.type }}</h6>
+            <br/>
+            <h5 class="card-subtitle mb-2">{{ class.price }}원</h5>
+          <p class="card-text">(설명 추가)</p>
+          <a href={{ class.url }} class="card-link" target="_blank">사이트로 이동</a>
+        </div>
+          <div class="card-footer">
+            <small class="text-muted">{{ class.website }}</small>
+          </div>
+      </div>
+  </div>
+    {% else %}{% endif %}
+    {% endfor %}
+</div>
+
+<!--{{ request.get_full_path }}-->
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if training_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ training_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in training_list.paginator.page_range %}
+        {% if page_number >= training_list.number|add:-5 and page_number <= training_list.number|add:5 %}
+            {% if page_number == training_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if training_list.has_next %}
+        <li class="page-item">
+            <a class="page-link"  href="?page={{ training_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+
+{% endblock %}
+
+
+<!--지금까지 만든 페이징 기능에 '처음'과 '마지막' 링크를 추가하고 '…' 생략 기호까지 추가하면 더 완성도 높은 페이징 기능이 될 것이다.-->
+<!--https://eveningdev.tistory.com/30 : 참고 홈페이지(티스토리)-->

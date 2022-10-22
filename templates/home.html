@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}S4T HOME{% endblock title%}
+{% block content %}
+<ul>
+    <li><a href="{% url 'search:search' %}">연수 검색</a></li>
+    <li><a href="{% url 'mypage:mypage' %}">나의 연수 이수 상황</a></li>
+</ul>
+
+{% endblock content %}
+
+
+<!--    <ul>-->
+<!--        {% for app in app_list %}-->
+<!--            {% with app|add:":"|add:"index"|lower|cut:" " as urlvar %}-->
+<!--            <li><h2><a href="{% url urlvar %}">{{app}}</a></h2></li>-->
+<!--            {% endwith %}-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
